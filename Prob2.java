@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Prob2 {
     public static class Semaforo {
         int limite;
@@ -32,7 +34,7 @@ public class Prob2 {
         }
 
         public void run() {
-            if (this.lado == "D") {
+            if (Objects.equals(this.lado, "D")) {
                 System.out.println("[CARRO " + this.num + "]: vou tentar passar da direita para a esquerda!!!");
             } else {
                 System.out.println("[CARRO " + this.num + "]: vou tentar passar da esquerda para a direita!!!");
@@ -46,7 +48,7 @@ public class Prob2 {
                 }
             }
 
-            if (this.lado == "D") {
+            if (Objects.equals(this.lado, "D")) {
                 System.out.println("[CARRO " + this.num + "]: passando para direita!!!");
             } else {
                 System.out.println("[CARRO " + this.num + "]: passando para esquerda!!!");
