@@ -38,7 +38,7 @@ public class Prob2 {
                 System.out.println("[CARRO " + this.num + "]: vou tentar passar da esquerda para a direita!!!");
             }
 
-            while (this.semaforo.entrar() != 0) {
+            while (this.semaforo.entrar() == 0) {
                 try {
                     Thread.sleep(20);
                 } catch (InterruptedException e) {
@@ -52,13 +52,10 @@ public class Prob2 {
                 System.out.println("[CARRO " + this.num + "]: passando para esquerda!!!");
             }
 
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                throw new RuntimeException();
-            } finally {
-                this.semaforo.sair();
-            }
+            System.out.println("PASSEI!!!!!!!!!!");
+
+            this.semaforo.sair();
+
         }
     }
 
