@@ -1,24 +1,26 @@
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
-public class Prob2 {
+public class Prob2Sincronizado {
+    private static ReentrantLock lock = new ReentrantLock();
+
     public static class Semaforo {
         int limite;
 
-        public Semaforo(int quantidade) {
-            this.limite = quantidade;
+        public Semaforo() {
+            this.limite = 1;
         }
 
-        public int entrar() {
-            if (this.limite > 0) {
-                this.limite--;
+        public int entrar(int num) {
+            if (Objects.equals(this.limite, 1)) {
+                this.limite = 0;
                 return 1;
-            } else {
-                return 0;
             }
+            return 0;
         }
 
         public void sair() {
-            this.limite++;
+            this.limite = 1;
         }
     }
 
@@ -31,20 +33,22 @@ public class Prob2 {
             this.num = num;
             this.lado = lado;
             this.semaforo = semaforo;
-        }
-
-        public void run() {
             if (Objects.equals(this.lado, "D")) {
                 System.out.println("[CARRO " + this.num + "]: vou tentar passar da direita para a esquerda!!!");
             } else {
                 System.out.println("[CARRO " + this.num + "]: vou tentar passar da esquerda para a direita!!!");
             }
 
-            while (this.semaforo.entrar() == 0) {
+        }
+
+        public void run() {
+            int passando = 0;
+            while (Objects.equals(passando, 0)) {
+                lock.lock();
                 try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException();
+                    passando = this.semaforo.entrar(this.num);
+                } finally {
+                    lock.unlock();
                 }
             }
 
@@ -54,7 +58,13 @@ public class Prob2 {
                 System.out.println("[CARRO " + this.num + "]: passando para esquerda!!!");
             }
 
-            System.out.println("PASSEI!!!!!!!!!!");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException();
+            }
+
+            System.out.println("Carro " + this.num + " passou!!!!!!!!!!");
 
             this.semaforo.sair();
 
@@ -62,18 +72,21 @@ public class Prob2 {
     }
 
     public static void main(String[] args) {
-        Semaforo semaforo = new Semaforo(1);
+        Semaforo semaforo = new Semaforo();
+        Thread[] ti = new Thread[30];
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 1; i <= 30; i++) {
             if (i % 2 == 0) {
                 Carro car = new Carro(i, "D", semaforo);
-                Thread ti = new Thread(car);
-                ti.start();
+                ti[i-1] = new Thread(car);
             } else {
                 Carro car = new Carro(i, "E", semaforo);
-                Thread ti = new Thread(car);
-                ti.start();
+                ti[i-1] = new Thread(car);
             }
+        }
+
+        for (int i = 1; i <= 30; i++) {
+            ti[i-1].start();
         }
     }
 }
