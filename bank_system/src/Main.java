@@ -12,7 +12,7 @@ public class Main {
 
         client1.withdraw(1000);
         client2.deposit(10000);
-        client1.withdraw(20000);
+        client1.withdraw(12000);
         client2.deposit(200);
         client3.withdraw(100);
         client4.deposit(1000);
