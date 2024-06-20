@@ -1,7 +1,6 @@
 import java.util.Objects;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class Prob2Assincronizado {
+public class Prob2Dessincronizado {
     public static class Carro implements Runnable {
         int num;
         String lado;
