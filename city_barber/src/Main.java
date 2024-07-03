@@ -4,12 +4,12 @@ public class Main {
     public static void main(String[] args) {
         Barbershop barbershop = new Barbershop();
 
-        Thread clients[] = new Thread[100]; // Criando espaço de memória para salvar as threads
-        for (int i = 1; i <= 100; i++) {
+        Thread clients[] = new Thread[15]; // Criando espaço de memória para salvar as threads
+        for (int i = 1; i <= 15; i++) {
             clients[i-1] = new Thread(new Client(barbershop, i)); // Criando os clientes
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 15; i++) {
             clients[i].start(); // Dando start em todas as threads criadas
         }
     }

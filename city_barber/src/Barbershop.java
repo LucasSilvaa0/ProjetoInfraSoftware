@@ -36,10 +36,10 @@ public class Barbershop {
 
     public void sair() {
         this.vagas_ocupadas--;
+        this.counter_finished++;
         if (Objects.equals(this.vagas_ocupadas, 0)) { // Se a barbearia ficar vazia, o barbeiro voltará a dormir
             System.out.println("Acabaram os clientes, o barbeiro vai voltar a dormir!");
         } else { // Se a barbearia ainda estiver com clientes, o barbeiro irá atender o próximo
-            this.counter_finished++;
             this.clients[this.counter_finished%5].ser_atendido();
         }
     }

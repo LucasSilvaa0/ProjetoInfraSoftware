@@ -31,8 +31,8 @@ public class Client implements Runnable {
 
         try {
             lock.lock(); // Trancamento da região crítica
-            entrada = this.barbearia.entrar(this); // Verificação se tem vaga para um novo cliente na barbearia
         } finally {
+            entrada = this.barbearia.entrar(this); // Verificação se tem vaga para um novo cliente na barbearia
             if (Objects.equals(entrada, 0)) {
                 System.out.println("[Cliente " + this.numero + "]: Infelizmente a barbearia está lotada, não terei como entrar.");
             } else if (Objects.equals(entrada, 1)) {
@@ -47,13 +47,19 @@ public class Client implements Runnable {
             this.atendimento = 1;
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException();
             }
 
-            System.out.println("[Cliente " + this.numero + "]: Meu atendimento acabou de ser finalizado!");
-            this.barbearia.sair();
+            try {
+                lock.lock(); // Trancamento da região crítica
+            } finally {
+                System.out.println("[Cliente " + this.numero + "]: Meu atendimento acabou de ser finalizado!");
+                this.barbearia.sair();
+                lock.unlock(); // Abertura da região crítica
+            }
+
         } else if (entrada > 1) { // Caso no qual o cliente entra na fila para ser atendido
             while (Objects.equals(this.atendimento, 0)) { // Enquanto o cliente não está sendo atendido, precisa esperar na fila
                 try {
@@ -72,7 +78,13 @@ public class Client implements Runnable {
             }
 
             System.out.println("[Cliente " + this.numero + "]: Meu atendimento acabou de ser finalizado!");
-            this.barbearia.sair();
+
+             try {
+                 lock.lock(); // Trancamento da região crítica
+             } finally {
+                 this.barbearia.sair();
+                 lock.unlock(); // Abertura da região crítica
+             }
         }
     }
 }
