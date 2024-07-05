@@ -11,6 +11,14 @@ public class Main {
 
         for (int i = 0; i < 15; i++) {
             clients[i].start(); // Dando start em todas as threads criadas
+
+            if (Object.equals(i, 8) || Object.equals(i, 20)) {
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException();
+                }
+            }
         }
     }
 }
