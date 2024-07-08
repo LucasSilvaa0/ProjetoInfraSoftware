@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -14,8 +15,10 @@ public class Main {
         }
 
         public void run() {
+            Random gerador = new Random();
+
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -23,7 +26,7 @@ public class Main {
                 Thread onibus = new Thread(new Onibus(this.semaforo, this.parada, this.lock));
                 onibus.start();
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000*(gerador.nextInt(2)+1));
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

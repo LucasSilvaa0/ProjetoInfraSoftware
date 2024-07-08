@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,8 +21,10 @@ public class Pessoa extends Thread {
     public void run() {
         System.out.println("Olá, eu sou a pessoa " + this.numero + " e irei agora para a parada de ônibus.");
 
+        Random gerador = new Random();
+
         try {
-            Thread.sleep(1000);
+            Thread.sleep(gerador.nextInt(5000));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
