@@ -9,16 +9,16 @@ public class Parada {
         this.qtd_pessoas = 0;
     }
 
-    public void nova_pessoa() { this.qtd_pessoas++; }
+    public void nova_pessoa() { this.qtd_pessoas++; } // Chegada de uma nova pessoa na parada
 
-    public void saida_pessoa() { this.qtd_pessoas--; }
+    public void saida_pessoa() { this.qtd_pessoas--; } // Saída de uma pessoa da parada para entrar no ônibus
 
-    public void novo_onibus() {
+    public void novo_onibus() { // Chegada de um novo ônibus na parada
         this.onibus_livre = 1;
         System.out.println("Um novo ônibus acabou de chegar!!");
     }
 
-    public void saida_onibus() {
+    public void saida_onibus() { // Saída do ônibus presente na parada
         this.onibus_livre = 0;
         if (Objects.equals(this.qtd_pessoas, 0)) {
             System.out.println("O ônibus acabou de ir embora e todos da parada conseguiram pegá-lo!");
