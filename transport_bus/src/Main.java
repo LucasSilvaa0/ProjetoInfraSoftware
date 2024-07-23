@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
@@ -23,8 +24,10 @@ public class Main {
                 Thread.currentThread().interrupt();
             }
             while (parada.qtd_pessoas > 0) {
-                Thread onibus = new Thread(new Onibus(this.semaforo, this.parada, this.lock)); // Criação dos ônibus
-                onibus.start();
+                if (Objects.equals(parada.onibus_livre, 0)) {
+                    Thread onibus = new Thread(new Onibus(this.semaforo, this.parada, this.lock)); // Criação dos ônibus
+                    onibus.start();
+                }
                 try {
                     Thread.sleep(1000*(gerador.nextInt(2)+1)); // Sortear um número entre 1s e 3s para saber o tempo da demora para passagem do próximo ônibus
                 } catch (InterruptedException e) {

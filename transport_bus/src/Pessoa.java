@@ -33,8 +33,20 @@ public class Pessoa extends Thread {
             this.lock.lock();
             parada.nova_pessoa(); // Indicar que essa nova pessoa chegou à parada
         } finally {
-            System.out.println("[Pessoa " + this.numero + "]: Cheguei na parada de ônibus.");
-            this.lock.unlock();
+            if (Objects.equals(parada.onibus_livre, 0)) { // Caso no qual a parada está sem ônibus
+                System.out.println("[Pessoa " + this.numero + "]: Cheguei na parada de ônibus.");
+                this.lock.unlock();
+            } else { // Caso no qual a parada está com ônibus
+                System.out.println("[Pessoa " + this.numero + "]: Cheguei na parada de ônibus, mas só poderei entrar no próximo.");
+                this.lock.unlock();
+                while (Objects.equals(parada.onibus_livre, 1)) { // Esperar o ônibus sair para ser liberado para o próximo
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
         }
 
         while (this.entrou != 1) { // Rodar o loop enquanto a pessoa não entrou em um ônibus
